@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="shortcut icon" href="{% static 'images/favicon.bmp' %}">
+    <title>OctoGPT</title>
+</head>
+<body>
+    <div class="site-area grid-container" id="sitearea">
+        <header class="menu-header">
+            <nav class="navigation">
+                <ul class="menu-list">
+                    <li class="li-item">
+                        <div class="menu-list-item" >
+                            <a href="{% url 'home' %}" class="a-header"><img class="ui-icon" src="{% static 'images/led/home.png' %}">
+                                Главная
+                            </a>
+                        </div>
+
+                    </li>
+                    <li class="li-item">
+                        <div class="menu-list-item" >
+                            <a href="{% url 'chat' %}" class="a-header">
+                                OctoCHAT
+                                <svg class="svg-container ui-icon" width="{{svg_data.width}}" height="{{svg_data.height}}" xmlns="http://www.w3.org/2000/svg">
+                                    <g class="svg-logo-group">
+                                        {% for elem in svg_data.elements %}
+                                             <g class="line-hex">
+                                                 <line class="svg-line" x1="{{ elem.line.x1 }}" y1="{{ elem.line.y1 }}" x2="{{ elem.line.x2 }}" y2="{{ elem.line.y2 }}" opacity="NaN" stroke="#1F2022" style="stroke-width:3" fill="none"/>
+                                                 <polygon class="svg-poly" points = "{{elem.polygon}}"  fill="none" stroke="#1F2022" style="stroke-width:2"/>
+                                             </g>
+                                        {% endfor %}
+                                    </g>
+                                </svg>
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="menu-list user-menu-piece">
+                    {% if request.user.is_authenticated %}
+                    <li class="li-item">
+                        <div class="menu-list-item">
+                            <a href="{% url 'lk' %}" class="a-header">
+                            <img class="ui-icon" src="{% static 'images/led/account.png' %}">  <span class="name-user"> {{user.username}}:</span> {{data_user.balance}} &#8756
+                        </a></div>
+                    </li>
+                    <li class="li-item">
+                        <div class="menu-list-item"><a href="{% url 'logout' %}" class="a-header">
+                            <img class="ui-icon" src="{% static 'images/led/logout.png' %}">Выйти </a></div>
+                    </li>
+                    {% else %}
+                     <li class="li-item">
+                        <div class="menu-list-item"><a href="{% url 'register' %}" class="a-header">
+                            <img class="ui-icon" src="{% static 'images/led/enter.png' %}">Зарегистрироваться</a></div>
+                    </li>
+                    <li class="li-item">
+                        <div class="menu-list-item"><a href="{% url 'login' %}" class="a-header">
+                            <img class="ui-icon" src="{% static 'images/led/enter.png' %}">Войти</a></div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </header>
+
+        <aside class="side-bar">
+            {% block chat_aside %}
+            {% endblock chat_aside%}
+        </aside>
+
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer-bar">
+            <div class="foot-menu">
+                <a href="{% url 'support' %}"><img class="footer-menu-img side" src="{% static 'images/led/headset.png' %}">Поддержка</a>
+                <a href=""><img class="footer-menu-img side" src="{% static 'images/led/tg.png' %}">Телеграм</a>
+                <a href="mailto:support@octogpt.ru"> <img class="footer-menu-img side" src="{% static 'images/led/at.png' %}">support@octogpt.ru</a>
+            </div>
+            <div class="foot-menu">
+                <p>&copy 2023 OctoGPT. Все права защищены.</p>
+                <p>Все права защищены.</p>
+
+                <p>ИП Бычков Д.П.</p>
+                <p>ОГРНИП 12334566788890</p>
+            </div>
+        </footer>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
+

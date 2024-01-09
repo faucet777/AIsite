@@ -1,0 +1,100 @@
+{% extends 'AIsite/base.html' %}
+{% load static %}
+
+{% block chat_aside %}
+<ul class="side-menu">
+    {% if aside_data %}
+        {% for chat in aside_data %}
+            {% if chat.chat_slug != chat_selected %}
+                <li class="side-bar-item">
+                    <a class="a-aside" href="{{ chat.get_absolute_url }}">
+                      <div class="side-item-div">
+                         {{ chat.chat_name }}
+                              <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">
+                                  {%csrf_token %}
+                                      <img class="ui-icon trash" src="{% static 'images/led/trash.png' %}">
+                              </form>
+                      </div>
+                    </a>
+                </li>
+            {% else %}
+            <li class="side-bar-item selected">
+              <div class="side-item-div">
+                 {{ chat.chat_name }}
+                  <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">
+                      {%csrf_token %}
+                          <img class="ui-icon selected trash" src="{% static 'images/led/trash.png' %}" onclick="del_chat_notify('{{ chat.chat_slug }}', '{{ chat.chat_name }}')">
+                  </form>
+              </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <li class="side-bar-item">
+        <div id="add_new_chat"  class="side-item-div newchat-div">
+            <input class="newname-input" type="text" id="chat-name-input" placeholder="Новый Чат">
+            <img class="ui-icon" id="ui-plus" src="{% static 'images/led/plus.png' %}">
+        </div>
+    </li>
+</ul>
+<!--<ul class="side-menu">-->
+<!--    {% if aside_data %}-->
+<!--        {% for chat in aside_data %}-->
+<!--            {% if chat.chat_slug != chat_selected %}-->
+<!--                <li class="side-bar-item">-->
+<!--                      <div class="side-item-div">-->
+<!--                          <a class="a-aside" href="{{ chat.get_absolute_url }}">-->
+<!--                          <div class="side-item-name">-->
+<!--                          {{ chat.chat_name }}-->
+<!--                          </div>-->
+<!--                          </a>-->
+<!--                          <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">-->
+<!--                              {%csrf_token %}-->
+<!--                              <img class="ui-icon side" src="{% static 'images/led/trash.png' %}">-->
+<!--                          </form>-->
+<!--                      </div>-->
+<!--                </li>-->
+<!--            {% else %}-->
+<!--            <li class="side-bar-item selected">-->
+<!--              <div class="side-item-div" >-->
+<!--                  <div class="side-item-name">-->
+<!--                 {{ chat.chat_name }}-->
+<!--                  </div>-->
+<!--                  <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">-->
+<!--                      {%csrf_token %}-->
+<!--                          <img class="ui-icon side" src="{% static 'images/led/trash.png' %}" onclick="del_chat_notify('{{ chat.chat_slug }}', '{{ chat.chat_name }}')">-->
+<!--                  </form>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            {% endif %}-->
+<!--        {% endfor %}-->
+<!--    {% endif %}-->
+<!--    <li class="side-bar-item">-->
+<!--        <div id="add_new_chat"  class="side-item-div newchat-div">-->
+<!--            <input class="newname-input" type="text" id="chat-name-input" placeholder="Новый Чат">-->
+<!--            <img class="ui-icon" id="ui-plus" src="{% static 'images/led/plus.png' %}">-->
+<!--        </div>-->
+<!--    </li>-->
+<!--</ul>-->
+{% endblock chat_aside %}
+
+{% block content %}
+    <div class="chat-area  grid-container">
+        <div class="chat" id="chat">
+            {% if msg_history %}
+            {% for mesg in msg_history %}
+                {% if mesg.role == 'user' %}
+                <div class="message user-msg"><h5 class="message-name">You: </h5> {{mesg.content}}</div>
+                {% else %}
+                <div class="message octo-msg"><h5 class="message-name">OctoGPT: </h5> {{mesg.content}}</div>
+                {% endif%}
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="input-div">
+            <input type="text" class="chat-input" id="message-input" placeholder="Привет, Я OctoGPT! О чем вы хотите меня спросить?">
+                <img class="button-send ui-icon side" id="send-button" src="{% static 'images/led/send.png' %}">
+
+        </div>
+    </div>
+{% endblock %}

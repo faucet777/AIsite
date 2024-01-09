@@ -1,0 +1,28 @@
+{% extends 'AIsite/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="content-item">
+{% if validlink %}
+    <form method="post" class="base-form">
+        {% csrf_token %}
+        {% for f in form %}
+        <div class="field-div">
+            <p class="form-field"><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{f}}</p>
+
+            <div class="form-error">{{f.errors}}</div>
+        </div>
+        {% endfor %}
+
+        <button type="submit">Сохранить новый пароль</button>
+
+    </form>
+{% else %}
+    <h1>Ссылка для изменения пароля не действительна, попробуйте запросить сброс пароля еще раз или обратитесь в
+        <a href="{% url 'support' %}">службу поддержки</a>
+    </h1>
+    {% endif %}
+</div>
+
+{% endblock %}

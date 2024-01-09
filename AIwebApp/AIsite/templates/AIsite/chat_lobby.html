@@ -1,0 +1,120 @@
+{% extends 'AIsite/base.html' %}
+{% load static %}
+
+{% block chat_aside %}
+<ul class="side-menu">
+    {% if aside_data %}
+        {% for chat in aside_data %}
+            {% if chat.chat_slug != chat_selected %}
+                <li class="side-bar-item">
+                    <a class="a-aside" href="{{ chat.get_absolute_url }}">
+                      <div class="side-item-div">
+                         {{ chat.chat_name }}
+                              <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">
+                                  {%csrf_token %}
+                                      <img class="ui-icon trash" src="{% static 'images/led/trash.png' %}">
+                              </form>
+                      </div>
+                    </a>
+                </li>
+            {% else %}
+            <li class="side-bar-item selected">
+              <div class="side-item-div">
+                 {{ chat.chat_name }}
+                  <form action="{% url 'delete_chat' chat.chat_slug %}" method="post" id="{{ chat.chat_slug }}">
+                      {%csrf_token %}
+                          <img class="ui-icon selected trash" src="{% static 'images/led/trash.png' %}" onclick="del_chat_notify('{{ chat.chat_slug }}', '{{ chat.chat_name }}')">
+                  </form>
+              </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <li class="side-bar-item">
+        <div id="add_new_chat"  class="side-item-div newchat-div">
+            <input class="newname-input" type="text" id="chat-name-input" placeholder="Новый Чат">
+            <img class="ui-icon" id="ui-plus" src="{% static 'images/led/plus.png' %}">
+        </div>
+    </li>
+</ul>
+{% endblock chat_aside %}
+
+{% block content %}
+<div class="lk-content">
+    <div class="content-item">
+        <h2>Как пользоваться OctoGPT</h2>
+        <div class="lk-data-item">
+            <h4>Доступ к OctoGPT</h4>
+            <div class="instruct-text">
+            Вы можете получить доступ к OctoGPT через веб-интерфейс, мобильное приложение или телеграм.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Запуск и начало диалога</h4>
+            <div class="instruct-text">
+            Нажмите на кнопку "Новый чат" на панели слева.
+            Вы увидите поле для ввода текста, где можно создать диалог. Введите название нового чата.
+            Нажмите на кнопку <img src="{% static 'images/led/plus.png' %}"> - cохранить и перейдите в сохраненный чат.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Ввод текста</h4>
+            <div class="instruct-text">
+            Начните вводить ваш вопрос или сообщение на естественном языке.
+            Нет необходимости использовать специальные команды или ключевые слова.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Диалог</h4>
+            <div class="instruct-text">
+            OctoGPT отвечает на ваш запрос автоматически. Он будет стараться понять ваш вопрос и предоставить наиболее подходящий ответ.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Уточнения и продолжение разговора</h4>
+            <div class="instruct-text">
+            Если вы хотите уточнить вопрос или продолжить разговор, просто введите дополнительный текст
+            в то же поле для ввода и нажмите <img src="{% static 'images/led/send.png' %}"> - отправить .
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Правила использования</h4>
+            <div class="instruct-text">
+            Пользуйтесь OctoGPT с уважением к другим пользователям и не создавайте контент, нарушающий законы.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Обратная связь и коррекция</h4>
+            <div class="instruct-text">
+            Если OctoGPT предоставил некорректный ответ или вас что-то не устроило, вы можете попробовать перефразировать вопрос
+            или указать на ошибку в ответе. Это поможет улучшить качество ответов в будущем.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Ограничения</h4>
+            <div class="instruct-text">
+            Помните, что OctoGPT - это программный продукт, и у него есть свои ограничения.
+            Он может не всегда понимать сложные запросы или предоставлять точные ответы на все вопросы.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Конфиденциальность</h4>
+            <div class="instruct-text">
+            Не передавайте личные, конфиденциальные или чувствительные данные через OctoGPT, так как это может быть небезопасно.
+            </div>
+        </div>
+        <div class="lk-data-item">
+            <h4>Экспериментируйте и учитесь</h4>
+            <div class="instruct-text">
+            OctoGPT может быть полезным для получения информации, обучения и развлечения.
+            Экспериментируйте, задавайте разные вопросы и учтите, что с практикой вы научитесь извлекать максимальную пользу из этого инструмента.
+            </div>
+        </div >
+        <div class="lk-data-item">
+            <h4>Эта инструкция поможет вам начать использовать OctoGPT.</h4>
+            Пользуйтесь им с умом и наслаждайтесь разнообразием возможностей, которые он предоставляет.
+        </div>
+        <div class="lk-data-item"><br></div>
+        </div>
+</div>
+{% endblock %}
